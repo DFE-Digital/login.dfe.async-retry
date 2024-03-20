@@ -19,14 +19,14 @@ describe('fetchApiRaw(resource, options)', () => {
     jest.restoreAllMocks();
   });
 
-	it('calls `fetch` with given resource', async () => {
+  it('calls `fetch` with given resource', async () => {
     await fetchApiRaw('https://localhost/test');
 
     const calledWithParams = mockedFetch.mock.calls[0];
     expect(calledWithParams[0]).toBe('https://localhost/test');
   });
 
-	it('calls `fetch` with given options', async () => {
+  it('calls `fetch` with given options', async () => {
     await fetchApiRaw('https://localhost/test', {
       method: 'GET',
       headers: {
@@ -41,7 +41,7 @@ describe('fetchApiRaw(resource, options)', () => {
     });
   });
 
-	it('does not pass the `retry` option to `fetch`', async () => {
+  it('does not pass the `retry` option to `fetch`', async () => {
     await fetchApiRaw('https://localhost/test', {
       retry: {
         retries: 3,
@@ -63,7 +63,7 @@ describe('fetchApiRaw(resource, options)', () => {
     expect(response).toBe('Test response');
   });
 
-	it('provides custom retry options to `asyncRetry`', async () => {
+  it('provides custom retry options to `asyncRetry`', async () => {
     await fetchApiRaw('https://localhost/test', {
       retry: {
         retries: 3,
@@ -76,7 +76,7 @@ describe('fetchApiRaw(resource, options)', () => {
     });
   });
 
-	it.each([ 199, 100, 300, 404, 500 ])('throws error with status code %d', async (statusCode) => {
+  it.each([ 199, 100, 300, 404, 500 ])('throws error with status code %d', async (statusCode) => {
     mockedFetch.mockResolvedValue({
       status: statusCode,
     });
