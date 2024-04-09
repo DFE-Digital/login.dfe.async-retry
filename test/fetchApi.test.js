@@ -62,4 +62,12 @@ describe('fetchApi(resource, options)', () => {
       status: 'OK',
     });
   });
+
+  it('returns plain text when json parsing of body fails (consistent with how request-promise worked previously)', async () => {
+    fetchApiRaw.mockResolvedValue('Plain text response.');
+
+    const response = await fetchApi('https://localhost/test');
+
+    expect(response).toEqual('Plain text response.');
+  });
 });
