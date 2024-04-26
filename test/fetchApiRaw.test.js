@@ -87,4 +87,32 @@ describe('fetchApiRaw(resource, options)', () => {
 
     await expect(act).rejects.toThrow(`Request failed with status code ${statusCode}`);
   });
+
+  it('throws error and includes a parsed error body', async () => {
+    mockedFetch.mockResolvedValue({
+      status: 500,
+      json: async () => ({ "response_code": "FAIL_XYZ" }),
+    });
+
+    const act = async () => {
+      await fetchApiRaw('https://localhost/test');
+    };
+
+    await expect(act).rejects.toHaveProperty('error', {
+      response_code: "FAIL_XYZ",
+    });
+  });
+
+  it('throws error and has no error body when one cannot be parsed', async () => {
+    mockedFetch.mockResolvedValue({
+      status: 500,
+      json: async () => JSON.parse('@'),
+    });
+
+    const act = async () => {
+      await fetchApiRaw('https://localhost/test');
+    };
+
+    await expect(act).rejects.toHaveProperty('error', undefined);
+  });
 });
